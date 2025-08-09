@@ -1,0 +1,1 @@
+The program searches for every sixth word of the text entered by the user. In this case, the seventh word from the collected buffer is written in the reverse order of letters. The program is implemented on TASM
