@@ -1,1 +1,1 @@
-
+This program calculates the result of an expression and checks if there's been an overflow during the calculation. If there is, it writes down the combination of numbers that caused the overflow to a file.
