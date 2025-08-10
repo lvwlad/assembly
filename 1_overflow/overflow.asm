@@ -9,9 +9,9 @@
 
 .data
 
-    A           dw      -120
-    B           dw      -115
-    C           dw      -100
+    A           dw      -128
+    B           dw      -128
+    C           dw      -128
     combo       db      ?
     znam        dw      ?
     filename    db      'lab-1_ow.txt',0
