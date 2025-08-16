@@ -13,10 +13,10 @@ Follow these steps to build and run the program:
 tasm /zi calc.asm
 tlink /v calc.obj
 calc.exe   # or run with debugger: td calc.exe
+```
 
-
-
-
+## Example Run
+```bash
 What operation you want choose? + or -
 Enter + or -: +
 Enter your 1st number (from -32768 to 32767): 1234
