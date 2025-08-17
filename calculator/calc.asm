@@ -1,10 +1,13 @@
 .model small
 .data    
-    message1    db      'What operation you want choose? + or -','$'
+    message1    db      'What operation you want choose?','$'
     message2    db      0Dh,0Ah,'Enter + or -: ','$'
     message3    db      0Dh,0Ah,'Enter your 1st number (from -32768 to 32767): ','$'
     message4    db      0Dh,0Ah,'Enter your 2nd number (from -32768 to 32767): ','$'
     message5    db      0Dh,0Ah,'Result: ','$'
+    message6    db      0Dh,0Ah,'Do you want calculate any other numbers? ','$'
+    message7    db      0Dh,0Ah,'(Y)es or (N)o:  ','$'
+    answer      db      4,?,4 DUP(0Dh)
     ;input       db      1,?
     number1     db      6,?,6 DUP('$')
     number2     db      6,?,6 DUP('$')
@@ -13,6 +16,7 @@
     res         dw      ?
     result      db      ?
     position    dw      ?
+    
 .stack 100h
 .code  
 .386
@@ -20,7 +24,9 @@ start:
     mov     ax,@data
     mov     ds,ax
     mov     es,ax
+start1:
     cld
+ 
   comment *
    mov      ax,offset number1
    mov      ax,offset number2
@@ -65,9 +71,13 @@ asc2num:
     mov     si,di
     lodsb   
     cmp     al,'-'
-    jz      transfer
+    jz      transfer0
     dec     si
-    
+    jmp     transfer
+transfer0:
+    dec     di
+    dec     byte ptr [di]
+    inc     di
 transfer:
     xor     bx,bx
     mov     bl,10
@@ -138,32 +148,34 @@ calculator3:
     
 minus:
     
-    sub     ebx,eax
-    cmp     ebx,0
+    sub     eax,ebx
+    cmp     eax,0
     js      neg_result
-    mov     eax,ebx
+    ;mov     eax,ebx
     xor     cx,cx
     jmp     print_result
     
 plus:
-    add     ebx,eax
-    cmp     ebx,0
+    add     eax,ebx
+    cmp     eax,0
     js      neg_result
-    mov     eax,ebx
+    ;mov     eax,ebx
     xor     cx,cx
     jmp     print_result
     
 neg_result:
     mov     di,offset result
+    push    ax
     mov     al,'-'
     stosb
-    neg     ebx
-    mov     eax,ebx
+    pop     ax
+    neg     eax
+    ;mov     eax,ebx
     xor     cx,cx
     jmp     print_result
 
 print_result:
-    cmp     eax,10
+    cmp     ax,10          ;cmp     eax,10
     js     print_result2
     mov     ebx,10
     push    ax
@@ -199,10 +211,10 @@ write:
     
     
 negative1:    
-    neg     bx
+    neg     eax
     jmp     calculator2
 negative2:    
-    neg     ax
+    neg     ebx
     jmp     calculator3
 end_program:
     
@@ -213,9 +225,53 @@ end_program:
     mov     ah,09h
     mov     dx,offset result
     int     21h
+    mov     ah,09h
+    mov     dx,offset message6
+    int     21h
+repeat_meet:
+    mov     ah,09h
+    mov     dx,offset message7
+    int     21h
+    mov     ah,0Ah
+    mov     dx,offset answer
+    int     21h
+    mov     si,offset answer
+    add     si,2
+    lodsb
+    cmp     al,'Y'
+    jz      answer1
+    cmp     al,'y'
+    jz      answer1
+    cmp     al,'N'
+    jz      answer2
+    cmp     al,'n'
+    jz      answer2
+    jmp     repeat_meet
+answer1:
+    lodsb
+    cmp     al,0Dh
+    jz     start1
+    cmp     al,'e'
+    jnz     wrong_answer
+    lodsb
+    cmp     al,'s'
+    jnz     wrong_answer
+    
+    
+    
+    jmp     start1
+    
    ; *
+answer2:
+    lodsb
+    cmp     al,0Dh
+    jz      its_end
+    cmp     AL,'o'
+    jnz     wrong_answer
+its_end:   
     mov     ah,4ch
     int     21h
-    
+wrong_answer:
+    jmp     repeat_meet  
     
     end     start
