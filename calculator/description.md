@@ -15,12 +15,26 @@ tlink /v calc.obj
 calc.exe   # or run with debugger: td calc.exe
 ```
 
-## Example Run
-```bash
+## 📌 Example run
+```
 What operation you want choose?
 Enter + or -: +
+
 Enter your 1st number (from -32768 to 32767): 1234
 Enter your 2nd number (from -32768 to 32767): 45
 Result: 1279
 
-Press any key to exit...
+Do you want calculate any other numbers?
+(Y)es or (N)o: y
+
+What operation you want choose?
+Enter + or -: -
+Enter your 1st number (from -32768 to 32767): 100
+Enter your 2nd number (from -32768 to 32767): 250
+Result: -150
+
+Do you want calculate any other numbers?
+(Y)es or (N)o: n
+```
+
+
