@@ -17,7 +17,7 @@ calc.exe   # or run with debugger: td calc.exe
 
 ## Example Run
 ```bash
-What operation you want choose? + or -
+What operation you want choose?
 Enter + or -: +
 Enter your 1st number (from -32768 to 32767): 1234
 Enter your 2nd number (from -32768 to 32767): 45
