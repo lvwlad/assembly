@@ -11,7 +11,7 @@ tasm caselip.asm
 tlink /t /x caselip.obj
 caselip.exe
 ```
-##📌 Example
+## 📌 Example
 ```bash
 enter your text (80 chars max): QwErTy
 qWeRtY
