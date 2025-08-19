@@ -1,2 +1,2 @@
 # assembly (TASM)
-There are several programs here 🤓
+There are several simple programs here 🤓
