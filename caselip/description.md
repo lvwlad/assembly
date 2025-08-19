@@ -9,7 +9,7 @@ A TASM program that toggles the case of letters in the input string:
 ```bash
 tasm caselip.asm
 tlink /t /x caselip.obj
-caselip.exe
+caselip.com
 ```
 ## 📌 Example
 ```bash
