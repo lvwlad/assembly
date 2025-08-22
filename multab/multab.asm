@@ -30,6 +30,7 @@ build_line:
     mov     ax,1
     push    ax              ;
     call    print_line      ;
+    add     sp,2            ; 
     cmp     bx,11
     jz      return_factor
     jmp     build_line
@@ -46,7 +47,7 @@ ax_same_6:
     jz      end_prog
     jmp     ax_same_6
 end_prog:
-    mov     ah,4Ch
+    mov     ax,4C00h
     int     21h
     print_line  proc
     
