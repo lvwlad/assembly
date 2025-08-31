@@ -39,7 +39,7 @@ six neveS twelve eighteen$
 
 ## 📊 Сравнительный анализ версий
 
-### 🔸 Первая версия (**search-6 (1).asm**, ~6 месяцев назад)  
+### 🔸 Первая версия (**search-6.asm**, ~6 месяцев назад)  
 - Вся логика была собрана в **один монолитный блок** с большим количеством меток (`proverka`, `copy_word`, `vozvrat` и т. д.).  
 - Работала корректно, но код был трудночитаемым и тяжёлым для отладки.  
 - Запись в файл уже присутствовала, что делало программу практичной.  
@@ -102,7 +102,7 @@ The result is also saved into `search-6.txt`.
 
 ## 📊 Comparative Analysis of Versions
 
-### 🔸 First version (**search-6 (1).asm**, ~6 months ago)  
+### 🔸 First version (**search-6.asm**, ~6 months ago)  
 - All logic was combined into **one monolithic block** with many labels (`proverka`, `copy_word`, `vozvrat`, etc.).  
 - It worked correctly but the code was hard to read and debug.  
 - File writing was already implemented, making the program practical.  
