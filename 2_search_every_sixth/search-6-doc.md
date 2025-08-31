@@ -56,10 +56,7 @@ six neveS twelve eighteen$
 
 ---
 
-## ✅ Итог
-За полгода твой стиль сильно изменился:  
-- от «рабочего комбайна» → к **структурированному и модульному коду**;  
-- теперь программа не только работает, но и легко поддерживается/расширяется.  
+
 
 
 ---
@@ -122,7 +119,4 @@ The result is also saved into `search-6.txt`.
 
 ---
 
-## ✅ Conclusion
-In six months your coding style has evolved:  
-- from a "working monolith" → to **structured and modular code**;  
-- now the program not only works but is also easy to maintain and extend.  
+
