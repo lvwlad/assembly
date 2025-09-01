@@ -7,6 +7,7 @@
 msg0        db      'Enter some words separated by space: $'
 msg1        db      0Dh,0Ah,'Selected words: $'
 msg2        db      0Dh,0Ah,'$'
+filename    db      'search-6.txt',0
 buffer      db      255,?,255 dup(?)
 everysix    db      ?
 .code
@@ -14,6 +15,13 @@ start: mov  AX,@data
     mov     DS,AX
     MOV     ES,AX
     CLD
+    
+    mov     ah,3Ch                  ; create a file
+    mov     cx,0
+    mov     dx,offset filename
+    int     21h
+    
+    mov     bp,ax
     xor     cx,cx
     call meeting
     ; find every sixth word then push them to buffer
@@ -52,7 +60,7 @@ end_line:
     
     mov     byte ptr es:[di],24h
     call    revers
-    
+    call    counter
     mov     ah,09h
     mov     dx,offset msg1
     int     21h
@@ -60,6 +68,15 @@ end_line:
     int     21h
     mov     dx,offset everysix
     int     21h
+    
+    
+    MOV     AH, 40h
+    LEA     DX, everysix
+    mov     bx,bp
+    
+    INT     21h
+    MOV     AH, 3Eh
+    INT     21h
 
     mov     ax,4C00h
     int     21h
@@ -117,6 +134,18 @@ ew_2:
 end_collect:
     ret
 revers      endp
+
+counter     proc
+mov     si,offset everysix
+
+xor     cx,cx
+c1:
+lodsb
+inc     cx
+cmp     al,24h
+jnz     c1
+ret
+counter     endp
 
 meeting     proc
     ; Proc prints meeting message for input data 
