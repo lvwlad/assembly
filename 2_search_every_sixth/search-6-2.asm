@@ -144,6 +144,7 @@ lodsb
 inc     cx
 cmp     al,24h
 jnz     c1
+dec     cx
 ret
 counter     endp
 
