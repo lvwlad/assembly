@@ -3,13 +3,16 @@
 ;.386
 .stack 100h
 .data
-number      dw      0
-position    db      0
-msg0        db      'Enter five numbers sep by space (necessarily) from -32768 to 32767: $'
-msg1        db      0Dh,0Ah,'Sorted massive: $'
-buffer      db      255,?,255 dup(?)
-numbers     dw      ?
-
+    output_string   db      100 dup (?)
+    number          dw      0
+    
+    position        db      0
+    
+    msg0            db      'Enter five numbers sep by space (necessarily) from -32768 to 32767: $'
+    msg1            db      0Dh,0Ah,'Sorted massive: $'
+    buffer          db      255,?,255 dup(?)
+    numbers         dw      ?
+    
 .code
 start:
     mov     ax,@data
@@ -21,8 +24,99 @@ start:
     ;mov    word ptr [bx+position], 0D0Dh
     ; Does user choose a bubble sort ? 
     call    bubble_sort
+    call    num2asc
+    mov     si,offset output_string
+    
+    sti
+mov ah,09h
+mov dx,offset msg1
+int 21h
 
+mov ah,09h
+mov dx,offset output_string
+int 21h
 
+    
+    mov     ax,4c00h
+    int     21h
+    
+    
+    
+    
+    
+    num2asc     proc
+    cld
+    mov     al,position
+    mov     dl,2
+    div     dl
+    ; al = sum of numbers
+    xor     ah,ah
+    mov     bp,ax
+    mov     si,offset numbers
+    mov     di,offset output_string
+    mov     dl,10
+    xor     cx,cx
+    xor     bx,bx
+num:
+    cmp     bp,0
+    jz      ep
+    lodsw
+         
+    cmp     ax,0
+    jns     skip_neg
+    neg     ax
+    mov     byte ptr es:[di],'-'
+    inc     di
+skip_neg:
+    div     dl
+    cmp     al,10
+    js     wrt0 
+    jmp     sn3  
+sn2:
+    div     dl
+    cmp     al,10
+sn3:
+    js      wrt
+    inc     cx
+    mov     bl,ah
+    push    bx
+    xor     ah,ah
+    jmp     sn2
+wrt:
+    xchg    ah,al
+    add     al,30h
+    stosb   
+    xchg    ah,al
+    add     al,30h
+    stosb
+wrt1:
+    pop     bx
+    mov     al,bl
+    add     al,30h
+    stosb
+    loop    wrt1
+    mov     al,20h
+    stosb
+    dec     bp
+    jmp     num
+ep:
+    mov al,'$'
+    stosb
+    
+    ret
+wrt0:
+    xchg    ah,al
+    add     al,30h
+    stosb   
+    xchg    ah,al
+    add     al,30h
+    stosb
+    mov     al,20h
+    stosb
+    dec     bp
+    jmp     num
+    
+    num2asc     endp
 
     asc2num     proc
     ; The procedure uses several labels for its work. 
@@ -103,17 +197,22 @@ point22:
      mov    bp,0
     ; mov    di,offset numbers
 point7:
-    
+    push    di
+    mov     di,offset numbers
+    mov     al,position
+    xor     ah,ah
+    add     di,ax
     mov     ax,number
     mov     number,0
-    mov    word ptr [bx+position], ax
+    stosw
+    ;mov    word ptr [bx+position], ax
     mov    ax,word ptr [bx+position] ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     add    position,2
+    pop     di
     jmp    point1
     
  
 end_line:
-    
     mov     dh,1
     jmp     point3  
 end_prog:
@@ -141,13 +240,14 @@ end_prog:
     mov     al,position
     sub     al,2
     xor     ah,ah
-    mov     dl,4
+    mov     dl,2
     div     dl          ; al = sum of numbers
     mov     cl,al
-    dec     cl
-    push    cx
+    ;dec     cl
+    ;push    cx
     xor     dx,dx
 again:
+    push    cx
     mov     si,bx
     add     bx,2
     mov     di,bx
@@ -157,18 +257,21 @@ next:
     cmpsw   ;;;;; use this comand  
     LAHF
     and     ah,10000000b
-    shr     ah,7
+    xor     al,al
+    shr     ax,15
     add     dx,ax
-    js      next1
-    mov     ax,word ptr [si]
-    xchg    word ptr [di],ax
-    mov     word ptr [si],ax
+    cmp     al,01h
+    jnz      next1
+    mov     ax,word ptr [si-2]
+    xchg    word ptr [di-2],ax
+    mov     word ptr [si-2],ax
     ;xchg    word ptr [si],word ptr [di]
 next1:
     loop    next  
 nums_end:
+    pop     cx
     cmp     dx,0
-    jnz      again                  
+    jz      again                  
     ret
     bubble_sort endp
     
